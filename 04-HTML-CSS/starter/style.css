@@ -1,0 +1,72 @@
+/* 
+For styling the overall of page setup, need to style in the body
+
+
+default HTML will automatically set margin and padding, that why we need to set overoall margin and padding to 0 first for styling each element itselft
+
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /*always use this when you style any boxes in element, and need to keep that style (that's mean this one do not plus any pixels to the box) */
+}
+
+/* 
+For styling all elements, need to style in the body
+*/
+body {
+  background-color: rgb(156, 156, 188);
+  font-family: Arial;
+  font-size: 20px;
+  padding: 50px;
+}
+
+h1 {
+  font-size: 35px;
+  margin-bottom: 25px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Using p Element to stlye all paragrapths at the same time */
+p {
+  margin-bottom: 20;
+}
+
+/* style by classes*/
+.first {
+  color: red;
+}
+/* style by ID*/
+#your-name {
+  background-color: rgb(186, 186, 167);
+  border: 5px solid #837f7f;
+  width: 400px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+/* Using , to style two Element at the same time*/
+input,
+button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* Styling URL link*/
+a {
+  background-color: yellowgreen;
+}
+
+/* Styling only h2 inside by specific ID*/
+#your-name h2 {
+  color: olivedrab;
+}
+/* Styling the image*/
+#my-github-profile {
+  width: 300px;
+  height: 300px;
+}
