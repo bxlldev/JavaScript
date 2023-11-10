@@ -1,10 +1,27 @@
 'use strict';
-/*
+
 // Data needed for a later exercise
 // const flights =
 //   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
 
 // Data needed for first part of the section
+
+const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+const openingHours = {
+  [weekdays[3]]: {
+    open: 12,
+    close: 22,
+  },
+  [weekdays[4]]: {
+    open: 11,
+    close: 23,
+  },
+  [weekdays[5]]: {
+    open: 0, // Open 24 hours
+    close: 24,
+  },
+};
 
 const restaurant = {
   name: 'Classico Italiano',
@@ -13,58 +30,81 @@ const restaurant = {
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
 
-  openingHours: {
-    thu: {
-      open: 12,
-      close: 22,
-    },
-    fri: {
-      open: 11,
-      close: 23,
-    },
-    sat: {
-      open: 0, // Open 24 hours
-      close: 24,
-    },
-  },
+  // ES6 enhance object literals
+  openingHours,
 
-  order: function (starterIndex, mainIndex) {
+  order(starterIndex, mainIndex) {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
 
-  orderDerivery: function ({
-    starterIndex = 1,
-    mainIndex = 0,
-    time = '20:00',
-    address,
-  }) {
+  orderDerivery({ starterIndex = 1, mainIndex = 0, time = '20:00', address }) {
     console.log(
       `Order receieved! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
     );
   },
 
-  orderPasta: function (ing1, ing2, ing3) {
+  orderPasta(ing1, ing2, ing3) {
     console.log(`Here is your delicious pasta with ${ing1} ${ing2} ${ing3}`);
   },
 
-  orderPizza: function (mainIngredient, ...othersIngredients) {
+  orderPizza(mainIngredient, ...othersIngredients) {
     console.log(mainIngredient);
     console.log(othersIngredients);
   },
 };
 
-const rest1 = {
-  name: 'Capri',
-  // numGuest: 20,
-  numGuest: 0,
-};
+if (restaurant.openingHours && restaurant.openingHours.mon)
+  console.log(restaurant.openingHours.mon.open);
 
-const rest2 = {
-  name: 'La Piazza',
-  owner: 'Giovanni Rossi',
-};
+// WITH optional chaining
+console.log(restaurant.openingHours.mon?.open);
+console.log(restaurant.openingHours?.mon?.open);
+
+// Example
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+for (const day of days) {
+  console.log(day);
+  const open = restaurant.openingHours[day]?.open ?? 'closed';
+  console.log(`On ${day}, we open at ${open}`);
+}
+
+// Methods
+console.log(restaurant.order?.(0, 1) ?? 'Method does not exist');
+console.log(restaurant.orderRisotto?.(0, 1) ?? 'Method does not exist');
+
+// Arrays
+// const user = [];
+const user = [{ name: 'Jonas', email: 'hello@gmail.com' }];
+console.log(user[0]?.name ?? 'User array empty');
+
+if (user.length > 0) console.log(user[0]?.name);
+else console.log('User array empty');
+
+// const rest1 = {
+//   name: 'Capri',
+//   // numGuest: 20,
+//   numGuest: 0,
+// };
+
+// const rest2 = {
+//   name: 'La Piazza',
+//   owner: 'Giovanni Rossi',
+// };
+
+/*
+
+//----------------Looping Array--------------
+
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+
+for (const item of menu) console.log(item);
+
+for (const [i, el] of menu.entries()) {
+  console.log(`${i + 1}: ${el}`);
+}
 
 */
+// console.log(...menu.entries());
 
 // OR assignment operator
 // rest1.numGuest = rest1.numGuest || 10;
@@ -343,7 +383,7 @@ TEST DATA for 6.: First, use players 'Davies', 'Muller', 'Lewandowski' and 'Kimm
 
 
 */
-
+/*
 const game = {
   team1: 'Bayern Munich',
   team2: 'Borrussia Dortmund',
@@ -387,41 +427,58 @@ const game = {
 };
 
 //------------1-----------------
-const player1 = game.players[0];
-const player2 = game.players[1];
+// Using Destructoring
+const [players1, players2] = game.players;
+console.log(players1, players2);
 
-console.log(player1);
-console.log(player2);
+// //------------2-----------------
+// Using Rest
+const [gk, ...fieldPlayers] = players1;
+console.log(gk, ...fieldPlayers);
 
-//------------2-----------------
-const gk = player1[0];
-console.log(gk);
-for (let i = 2; i < player1.length; i++) {
-  let fieldPlayers = [];
-  fieldPlayers += player1[i];
-  console.log(fieldPlayers);
-}
-
-const [a, b, ...others] = [1, 2, 3, 4, 5];
-console.log(a, b, others);
-
-//------------3-----------------
-const allPlayers = [...player1, ...player2];
+// //------------3-----------------
+// Using Spread operator
+const allPlayers = [...players1, ...players2];
 console.log(allPlayers);
 
-//------------4-----------------
-
-const players1Final = [...player1, 'Thiago', 'Coutinho', 'Perisic'];
+// //------------4-----------------
+const players1Final = [...players1, 'Thiago', 'Coutinho', 'Perisic'];
 console.log(players1Final);
 
-//------------5-----------------
+// //------------5-----------------
+// Using Nested
+const {
+  odds: { team1, x: draw, team2 },
+} = game;
+console.log(team1, draw, team2);
 
-const xxx = [game.odds.team1, 'team1'];
-const yyy = [game.odds.x, 'draw'];
-const zzz = [game.odds.team1, 'team2'];
+// //------------6-----------------
+// Using Rest
+const printGoals = function (...players) {
+  console.log(players);
+  console.log(`${players.length} goals were scored`);
+};
 
-const oneVariable = [xxx, yyy, zzz];
+// printGoals('Davies', 'Muller', 'Lewandowski', 'Kimmich');
+// printGoals('Davies', 'Muller');
+printGoals(...game.scored);
 
-console.log(oneVariable);
+// //------------7-----------------
+// Using AND operator, it will continue true until finding falsty value it will stop and return the lastone, otherwise it will return the last one
 
-//------------6-----------------
+// && Operator >> Return first falty (or not return)
+// true1 && true2 && true3 >> return true3 (No falty)
+// true1 && true2 && false1 >> return false1
+// true1 && false1 && true2 >> return false1
+// false1 && false2 && true1 >> return false1
+
+// || Operator >> Return first true
+// true1 || true2 || true3 >> return true1
+// true1 || true2 || false >> return true1
+// false || true1 || true2 >> return true1
+// true1 || false || true2 >> return true1
+// false1 || false2 || false3 >> return false3 (No Truely)
+
+team1 > team2 && console.log('Team 1 is more likely to win');
+team1 < team2 && console.log('Team 2 is more likely to win');
+*/
