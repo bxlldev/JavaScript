@@ -479,6 +479,13 @@ printGoals(...game.scored);
 // true1 || false || true2 >> return true1
 // false1 || false2 || false3 >> return false3 (No Truely)
 
+// ?? Operator >> Return frist Nullish value
+// true1 ?? true2 ?? true3 >> return true1 (No Nullish value)
+// true1 ?? true2 ?? false >> return false
+// false ?? true1 ?? true2 >> return flase
+// true1 ?? false ?? true2 >> return false
+// false1 ?? false2 ?? false3 >> return false1
+
 team1 > team2 && console.log('Team 1 is more likely to win');
 team1 < team2 && console.log('Team 2 is more likely to win');
 */
