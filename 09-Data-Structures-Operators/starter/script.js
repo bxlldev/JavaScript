@@ -53,6 +53,475 @@ const restaurant = {
   },
 };
 
+/////////////////////////////////////////////////////
+// String Methods Practice
+
+const flights =
+  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+// 🔴 Delayed Departure from FAO to TXL (11h25)
+//              Arrival from BRU to FAO (11h45)
+//   🔴 Delayed Arrival from HEL to FAO (12h05)
+//            Departure from FAO to LIS (12h30)
+
+const getCode = str => str.slice(0, 3).toUpperCase();
+
+for (const flight of flights.split('+')) {
+  const [type, from, to, time] = flight.split(';');
+  const output = `${type.startsWith('_Delayed') ? '🔴' : ''}${type.replaceAll(
+    '_',
+    ' '
+  )} from ${getCode(from)} to ${getCode(to)} (${time.replace(
+    ':',
+    'h'
+  )})`.padStart(45);
+  console.log(output);
+}
+
+/////////////////////////////////////////////////////
+// Coding Challenge #4
+
+/*
+Write a program that receives a list of variable names written in underscore_case and convert them to camelCase.
+The input will come from a textarea inserted into the DOM (see code below to insert the elements), and conversion will happen when the button is pressed.
+
+// Test data (pasted to textarea, including spaces):
+underscore_case
+ first_name
+Some_Variable
+  calculate_AGE
+delayed_departure
+
+// Should produce this output (5 separate console.log outputs):
+underscoreCase      ✅
+firstName           ✅✅
+someVariable        ✅✅✅
+calculateAge        ✅✅✅✅
+delayedDeparture    ✅✅✅✅✅
+
+// HINT:
+- Remember which character defines a new line in the textarea 😉
+- The solution only needs to work for a variable made out of 2 words, like a_b
+- Start without worrying about the ✅. Tackle that only after you have the variable name conversion working 😉
+- This challenge is difficult on purpose, so start watching the solution in case you're stuck. Then pause and continue!
+
+Afterwards, test with your own test data!
+
+*/
+
+/*
+
+document.body.append(document.createElement('textarea'));
+document.body.append(document.createElement('button'));
+
+document.querySelector('button').addEventListener('click', function () {
+  const text = document.querySelector('textarea').value;
+  const rows = text.split('\n');
+  console.log(rows);
+
+  for (const [i, row] of rows.entries()) {
+    const [first, second] = row.toLocaleLowerCase().trim().split('_');
+
+    const output = `${first}${second.replace(
+      second[0],
+      second[0].toUpperCase()
+    )}`;
+    console.log(`${output.padEnd(20)}${'✅'.repeat(i + 1)}`);
+  }
+});
+
+*/
+
+// underscore_case -> underscoreCase
+//  first_name -> firstName
+// Some_Variable -> someVariable
+//   calculate_AGE -> calculateAge
+// delayed_departure -> delatedDeparture
+
+////////////////////////////////////////////////////////
+
+/*
+
+/////////////////////////////////////////////////////
+// Working with Strings#3
+
+// Split and join
+
+console.log('a+very+nice+string'.split('+'));
+console.log('Thanachart Saejueng'.split(' '));
+
+const [firstName, lastName] = 'Thanachart Saejueng'.split(' ');
+
+const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ');
+console.log(newName);
+
+const capitalizeName = function (name) {
+  const names = name.split(' ');
+  const namesUpper = [];
+
+  for (const n of names) {
+    // namesUpper.push(n[0].toUpperCase() + n.slice(1));
+    namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
+  }
+  console.log(namesUpper.join(' '));
+};
+
+capitalizeName('jessica ann smith devais');
+capitalizeName('jonas schmedtmann');
+
+// Padding
+const message = 'Go to gate 23!';
+console.log(message.padStart(25, '+').padEnd(30, '+'));
+console.log('Jonas'.padStart(25, '+').padEnd(30, '+'));
+
+const maskCreditCard = function (number) {
+  const str = number + '';
+  const last = str.slice(-4);
+  return last.padStart(str.length, '*');
+};
+console.log(maskCreditCard(433784));
+console.log(maskCreditCard(43378463864647384));
+console.log(maskCreditCard('48315304884653454'));
+
+// Repeat
+const message2 = 'Bad weather... All Departues Delayed... ';
+console.log(message2.repeat(5));
+
+const planesInLine = function (n) {
+  console.log(`There are ${n} planes in line ${'✈️'.repeat(n)}`);
+};
+planesInLine(5);
+planesInLine(3);
+planesInLine(12);
+
+*/
+
+/*
+
+/////////////////////////////////////////////////////
+// Working with Strings#2
+
+const airline = 'TAP Air Portugal';
+
+console.log(airline.toLowerCase());
+console.log(airline.toUpperCase());
+
+// Fix capitalization in name
+const passenger = 'jOnAS'; // Jobas
+const passengerLower = passenger.toLowerCase();
+const passengerCorrect =
+  passengerLower[0].toUpperCase() + passengerLower.slice(1);
+
+console.log(passengerCorrect);
+
+// Comparing email
+const email = 'hello@jonas.io';
+const loginEmail = '  Hello@Jonas.Io \n';
+
+// const lowerEmail = loginEmail.toLowerCase();
+// const trimmedEmail = lowerEmail.trim();
+
+const normalizedEmail = loginEmail.toLowerCase().trim();
+console.log(normalizedEmail);
+console.log(email === normalizedEmail);
+
+// Replacing
+const priceGB = '288,97B';
+const priceUS = priceGB.replace('B', '$').replace(',', '.');
+console.log(priceUS);
+
+const announcement =
+  'All passengers come to barding door 23. Boarding door 23!';
+
+console.log(announcement.replace('door', 'gate')); // only replace only first word found
+// console.log(announcement.replaceAll('door', 'gate')); // can be using in the next lesson
+console.log(announcement.replace(/door/g, 'gate'));
+
+// Booleans
+const plane = 'Airbus A320neo';
+console.log(plane.includes('A320'));
+console.log(plane.includes('Boeing'));
+console.log(plane.startsWith('Airb'));
+
+if (plane.startsWith('Airbus') && plane.endsWith('neo')) {
+  console.log('Part of the NEW Airbus family');
+}
+
+// Practice exercise
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+  if (baggage.includes('knife') || baggage.includes('gun')) {
+    console.log('You are NOT allowed on board');
+  } else {
+    console.log('Welcome aboard!');
+  }
+};
+checkBaggage('I have a laptop, somefood, and a pocket Knift');
+checkBaggage('Socks and camera');
+checkBaggage('Got some snacks and a gun for protection');
+
+*/
+
+/////////////////////////////////////////////////////
+// Working with Strings#1
+
+/*
+
+const airline = 'TAP Air Portugal';
+const plan = 'A320';
+
+console.log(plan[0]);
+console.log(plan[1]);
+console.log(plan[2]);
+console.log('B737'[0]);
+
+console.log(airline.length);
+console.log('B737'.length);
+
+console.log(airline.indexOf('r'));
+console.log(airline.lastIndexOf('r'));
+console.log(airline.indexOf('portugal'));
+
+console.log(airline.slice(4));
+console.log(airline.slice(4, 7)); // slice index4 - 6 (index7 is not included)
+
+console.log(airline.slice(0, airline.indexOf(' ')));
+console.log(airline.slice(airline.lastIndexOf(' ') + 1));
+
+console.log(airline.slice(-2));
+console.log(airline.slice(1, -1));
+
+const checkMiddleSeat = function (seat) {
+  // B and E are middle seats
+  const s = seat.slice(-1);
+  if (s === 'B' || s === 'E') console.log('You got the middle seat :)');
+  else console.log('You got lucky');
+};
+
+checkMiddleSeat('11B');
+checkMiddleSeat('23C');
+checkMiddleSeat('3E');
+
+console.log(new String('Jonas'));
+console.log(typeof new String('Jonas'));
+
+console.log(typeof new String('Jonas').slice(1));
+
+*/
+
+/*
+/////////////////////////////////////////////////////
+// Coding Challenge#3
+
+Let's continue with our football betting app! This time, we have a map called 'gameEvents' (see below) with a log of the events that happened during the game. The values are the events themselves, and the keys are the minutes in which each event happened (a football game has 90 minutes plus some extra time).
+
+Your tasks:
+1. Create an array 'events' of the different game events that happened (no duplicates)
+
+2. After the game has finished, is was found that the yellow card from minute 64 was unfair. So remove this event from the game events log.
+
+3. Compute and log the following string to the console: "An event happened, on average, every 9 minutes" (keep in mind that a game has 90 minutes)
+
+4. Loop over 'gameEvents' and log each element to the console, marking whether it's in the first half or second half (after 45 min) of the game, like this:
+
+[FIRST HALF] 17: ⚽GOAL
+
+
+GOOD LUCK 😀
+
+*/
+
+/*
+
+const gameEvents = new Map([
+  [17, '⚽ GOAL'],
+  [36, '🔁 Substitution'],
+  [47, '⚽ GOAL'],
+  [61, '🔁 Substitution'],
+  [64, '🟡 Yello card'],
+  [69, '🔴 Red card'],
+  [70, '🔁 Substitution'],
+  [72, '🔁 Substitution'],
+  [76, '⚽ GOAL'],
+  [80, '⚽ GOAL'],
+  [92, '🟡 Yello card'],
+]);
+
+//---------------------1------------------------------
+// Using map convert to array
+const events = [...new Set(gameEvents.values())];
+console.log(events);
+
+//---------------------2------------------------------
+gameEvents.delete(64);
+console.log(gameEvents);
+//---------------------3------------------------------
+const time = [...gameEvents.keys()].pop();
+console.log(time);
+console.log(
+  `An event happened, on average, every ${time / gameEvents.size} minutes`
+);
+
+//---------------------4------------------------------
+for (let [min, event] of gameEvents) {
+  const half = min <= 45 ? 'FIRST' : 'SECOND';
+  console.log(`[${half} HALF] ${min}: ${event}`);
+}
+
+*/
+
+/////////////////////////////////////////////////////
+/*
+/////////////////////////////////////////////////////
+//-----------------Map Converting to Array-------------------------------
+
+const question = new Map([
+  ['question', 'What is the best programming language in the world?'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JavaScript'],
+  ['correct', 3],
+  [true, 'Correct 🥇'],
+  [false, 'Try again!'],
+]);
+console.log(question);
+
+// Convert object to map
+console.log(Object.entries(openingHours));
+const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap);
+
+// Quiz app
+console.log(question.get('question'));
+for (const [key, value] of question) {
+  if (typeof key === 'number') console.log(`Answer ${key}: ${value}`);
+}
+// const answer = Number(prompt('Your answer'));
+const answer = 3;
+console.log(answer);
+
+console.log(question.get(question.get('correct') === answer));
+
+// Convert map to array
+console.log([...question]);
+console.log(question.entries());
+console.log([...question.keys()]);
+console.log([...question.values()]);
+
+*/
+
+// if (answer === question.get(3)) {
+//   console.log(question.get(true));
+// } else {
+//   console.log(question.get(false));
+// }
+
+/*
+
+/////////////////////////////////////////////////////
+//-----------------Map-------------------------------
+const rest = new Map();
+rest.set('name', 'Classico Italiano');
+rest.set(1, 'Firenze, Italy');
+console.log(rest.set(2, 'Lisbon, Portugal'));
+
+rest
+  .set('catagories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+  .set('open', 11)
+  .set('close', 23)
+  .set(true, 'We are open :D')
+  .set(false, 'We are closed :(');
+
+console.log(rest.get('name'));
+console.log(rest.get(true));
+console.log(rest.get(1));
+
+const time = 8;
+console.log(rest.get(time > rest.get('open') && time < rest.get('close')));
+
+console.log(rest.has('catagories')); // check
+rest.delete(2);
+// rest.clear();
+
+const arr = [1, 2];
+rest.set(arr, 'Test');
+rest.set(document.querySelector('h1'), 'Heading');
+
+console.log(rest);
+console.log(rest.size);
+
+console.log(rest.get(arr));
+*/
+
+/*
+/////////////////////////////////////////////////////
+//-----------------SET-------------------------------
+// SET >> Unique value, format seamlike Array but duplicate the same string
+const ordersSet = new Set(['Pasta', 'Pizza', 'Pizza', 'Risotto', 'Pizza']);
+
+console.log(ordersSet);
+
+console.log(new Set('Jonas'));
+
+console.log(ordersSet.size); // size difference with length
+
+console.log(ordersSet.has('Pizza')); // check variable in SET
+console.log(ordersSet.has('Bread'));
+ordersSet.add('Garlic Bread');
+ordersSet.add('Garlic Bread');
+ordersSet.delete('Risotto');
+// ordersSet.clear();
+console.log(ordersSet);
+
+for (const order of ordersSet) console.log(order);
+
+// Example
+
+const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter'];
+const staffUnique = [...new Set(staff)];
+console.log(staffUnique);
+console.log(
+  new Set(['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']).size
+);
+
+console.log(new Set('jonasschmedtmann').size);
+*/
+
+/*
+/////////////////////////////////////////////////////
+
+// Looping Object
+
+// Property NAMES [key]
+const properties = Object.keys(openingHours);
+console.log(properties);
+
+let openStr = `We are open on ${properties.length} days: `;
+
+for (const day of properties) {
+  openStr += `${day}, `;
+}
+
+console.log(openStr);
+
+// Property VALUES
+const values = Object.values(openingHours);
+console.log(values);
+
+// Entire object
+const entries = Object.entries(openingHours);
+// console.log(entries);
+
+// [key, value]
+for (const [day, { open, close }] of entries) {
+  console.log(`On ${day} we open at ${open} and close at ${close}`);
+}
+
+
+
+/*
+////////////////////////////////////////////////////////////////
+// Optional Chaining
 if (restaurant.openingHours && restaurant.openingHours.mon)
   console.log(restaurant.openingHours.mon.open);
 
@@ -79,6 +548,8 @@ console.log(user[0]?.name ?? 'User array empty');
 
 if (user.length > 0) console.log(user[0]?.name);
 else console.log('User array empty');
+
+*/
 
 // const rest1 = {
 //   name: 'Capri',
@@ -382,8 +853,10 @@ console.log(p, q, r);
 TEST DATA for 6.: First, use players 'Davies', 'Muller', 'Lewandowski' and 'Kimmich'. Then call the function again with players form game.scored
 
 
-*/
-/*
+
+
+// const scored = ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'];
+
 const game = {
   team1: 'Bayern Munich',
   team2: 'Borrussia Dortmund',
@@ -425,6 +898,8 @@ const game = {
     team2: 6.5,
   },
 };
+
+/*
 
 //------------1-----------------
 // Using Destructoring
@@ -488,4 +963,80 @@ printGoals(...game.scored);
 
 team1 > team2 && console.log('Team 1 is more likely to win');
 team1 < team2 && console.log('Team 2 is more likely to win');
+*/
+
+///////////////////////////////////////////////////////////
+
+// Coding Challenge #2
+/*
+
+Let's continue with our football betting app! Keep using the 'game' variable from
+before.
+
+Your tasks:
+
+1. Loop over the game.scored array and print each player name to the console, along with the goal number (Example: "Goal 1: Lewandowski")
+
+2. Use a loop to calculate the average odd and log it to the console (We already studied how to calculate averages, you can go check if you don't remember)
+
+3. Print the 3 odds to the console, but in a nice formatted way, exactly like this:
+  Odd of victory Bayern Munich: 1.33
+  Odd of draw: 3.25
+  Odd of victory Borrussia Dortmund: 6.5
+Get the team names directly from the game object, don't hardcode them (except for "draw"). Hint: Note how the odds and the game objects have the same property names 😉
+
+4. Bonus: Create an object called 'scorers' which contains the names of the players who scored as properties, and the number of goals as the value. In this game, it will look like this:
+{
+Gnarby: 1,
+Hummels: 1,
+Lewandowski: 2
+}
+
+GOOD LUCK 😀
+
+//------------1-----------------
+
+// const entriesScored = Object.entries(scored);
+// console.log(entriesScored);
+
+// for (let [printScored, name] of entriesScored) {
+//   console.log(`Goal ${Number(printScored) + 1}: ${name}`);
+// }
+
+//------------2-----------------
+
+//------------3-----------------
+
+//------------4 (Bonus)-----------------
+
+/////////////////////////////////////////////////////////////
+//----------------Solution----------------------------
+
+//------------1-----------------
+
+for (const [i, player] of game.scored.entries())
+  console.log(`Goal ${i + 1}: ${player}`);
+
+//------------2-----------------
+
+const odds = Object.values(game.odds);
+let average = 0;
+for (const odd of odds) average += odd;
+average /= odds.length;
+console.log(average);
+
+//------------3-----------------
+
+for (const [team, odd] of Object.entries(game.odds)) {
+  // Using the same name of properties (team == team1, team2) to make teamStr
+  const teamStr = team === 'x' ? 'draw' : `victory ${game[team]}`;
+  console.log(` Odd of ${teamStr} ${odd}`);
+}
+
+// Odd of victory Bayern Munich: 1.33
+// Odd of draw: 3.25
+// Odd of victory Borrussia Dortmund: 6.5
+
+//------------4 (Bonus)-----------------
+
 */
