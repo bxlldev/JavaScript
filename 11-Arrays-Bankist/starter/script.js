@@ -74,7 +74,7 @@ const displayMovements = function (movements) {
      <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-     <div class="movements__value">${mov}</div>
+     <div class="movements__value">${mov}€</div>
     </div>
     `;
     // forEach Method will be adding in HTML, at the top of element (afterbegin), if using (beforeend) it will adding in HTML, at the bottom of element
@@ -82,15 +82,35 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
-// console.log(containerMovements.innerHTML);
-
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance} €`;
 };
 
-calcDisplayBalance(account1.movements);
+const calcDisplaySummary = function (acc) {
+  // Income => total deposit
+  const incomes = acc.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  // Outcome => total withdrawal
+  const outcomes = acc.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outcomes)}€`;
+
+  // Interest => total deposit * 1.2%
+  const interest = acc.movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * acc.interestRate) / 100)
+    .filter((int, i, arr) => {
+      // console.log(arr);
+      return int >= 1; // Bank rules: Interest totally included only 1 at lease.
+    })
+    .reduce((acc, int) => acc + int);
+  labelSumInterest.textContent = `${interest}€`;
+};
 
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
@@ -104,8 +124,118 @@ const createUsernames = function (accs) {
 
 createUsernames(accounts);
 
+// Event handler
+let currentAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  // Prevent form from submiiting
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+  console.log(currentAccount);
+
+  // Using ? for optional chaining, if data does not existed, it will skip instead
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI and message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+    containerApp.style.opacity = 100;
+
+    // Clear input field
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+
+    // Display movements
+    displayMovements(currentAccount.movements);
+
+    // Display balance
+    calcDisplayBalance(currentAccount.movements);
+
+    // Display summary
+    calcDisplaySummary(currentAccount);
+  }
+});
+
+/*
+
+/////////////////////////////////////////////////
+//-----------The Find Method-------
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// Find Method => return only the first element that match with specificly condition (not create new array, just return the first element)
+const firstWithdrawal = movements.find(mov => mov < 0);
+console.log(movements);
+console.log(firstWithdrawal);
+
+console.log(accounts);
+
+// Using Find Method to find what you want in the object
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
+
+*/
+
+/////////////////////////////////////////////////
+//-----------Coding Challenge #3-------
+
+/*
+
+Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time as an arrow function, and using chaining!
+
+Test data:
+§ Data 1: [5, 2, 4, 1, 15, 8, 3]
+§ Data 2: [16, 6, 10, 5, 6, 1, 4]
+
+GOOD LUCK 😀
+
+
+
+*/
+
+/*
+
+const calcAverageHumanAge = ages => {
+  // Using Chaining
+  const average = ages
+    .map(dogAge => (dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4))
+    .filter((age, i, arr) => age >= 18)
+    .reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+  console.log(`Avarage human's ages: ${average}`);
+};
+
+console.log('-------------Test data #1--------------');
+calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+console.log('-------------Test data #2--------------');
+calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
+
+*/
+
+/*
+
 /////////////////////////////////////////////////
 //-----------The Magic of Chaining Methods-------
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const eurToUsd = 1.1;
+
+console.log(movements);
+
+// Pipeline
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  // .map(mov => mov * eurToUsd)
+  // Another way to inspect your result
+  .map((mov, i, arr) => {
+    // console.log(arr);
+    return mov * eurToUsd;
+  })
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(totalDepositsUSD);
+
+*/
 
 /*
 
