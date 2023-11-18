@@ -153,7 +153,7 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
     }`;
-    containerApp.style.opacity = 100;
+    containerApp.style.opacity = 100; // 100 = display, 0 = hide
 
     // Clear input field
     inputLoginUsername.value = inputLoginPin.value = '';
@@ -186,6 +186,82 @@ btnTransfer.addEventListener('click', function (e) {
     updateUI(currentAccount);
   }
 });
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+  // Any deposit > 10% of request
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Add movement
+    currentAccount.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+  // Reload
+  inputLoanAmount.value = '';
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername?.value === currentAccount.username &&
+    Number(inputClosePin?.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    console.log(index);
+
+    // .indexOf(23) >> .indexOf(value) >> search by value to find the index in the object
+    // .fincIndex(callback func) >> search by condition to find the index in the object
+
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+
+    // Logout user
+  }
+  // Reload
+  inputCloseUsername.value = inputClosePin.value = '';
+});
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+//-----------Some and Every Method-------
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// Recall .include(value) Method => check the value is existed in the array or not (expect result: True/False)
+console.log(movements);
+console.log(movements.includes(-130));
+
+// Include Method => check by value (Equality)
+// Some Method => check by condition
+// Comparation Include Method & Some Method with the same specific
+console.log(movements.some(mov => mov === -130));
+
+const anyDeposits = movements.some(mov => mov > 0);
+console.log(anyDeposits);
+
+// Every Method => check by Every specific condition is matched, return True/False
+console.log(movements.every(mov => mov > 0));
+console.log(account4.movements.every(mov => mov > 0));
+
+// Separate callback
+const deposit = mov => mov > 0;
+console.log(movements.some(deposit));
+console.log(movements.every(deposit));
+console.log(movements.filter(deposit));
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+//-----------The Findindex Method-------
+// .indexOf(23) >> .indexOf(value) >> search by value to find the index in the object
+// .fincIndex(callback func) >> search by condition to find the index in the object
 
 /*
 
