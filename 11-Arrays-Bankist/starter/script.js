@@ -259,6 +259,10 @@ console.log(movements.filter(deposit));
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+//-----------Flat and flatMap Method-------
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
 //-----------The Findindex Method-------
 // .indexOf(23) >> .indexOf(value) >> search by value to find the index in the object
 // .fincIndex(callback func) >> search by condition to find the index in the object
