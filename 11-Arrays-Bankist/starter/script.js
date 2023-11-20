@@ -296,6 +296,47 @@ const dogs = [
   { weight: 23, curFood: 340, owners: ['Michael'] },
 ];
 
+// console.log(dogs);
+// console.log(dogs[0].weight);
+
+// Eating too much => curFood > recFood
+// Eating too little => curFood < recFood
+// Eating OK (within range 10% above and below) => curFood > (recFood * 0.9) && curFood < (recFood * 1.1)
+
+// RecommendedFood = weight ** 0.75 * 28 (Food's unit: grams, weight's unit: kg (kilograms))
+
+// Recall
+// dogs.forEach(function (d, i, __) {
+//   d >= 3
+//     ? console.log(`Dog number ${i + 1} is an adult, and is ${d} years old `)
+//     : console.log(`Dog number ${i + 1} is still a puppy🐶`);
+// });
+
+//-------1--------
+dogs.forEach((weight, i, arr) => {
+  dogs[i].recommendedFood = Number(dogs[i].weight ** 0.75 * 28);
+  console.log(dogs.recommendedFood);
+});
+
+console.log(dogs);
+
+//-------2--------
+// console.log(dogs.owners.findIndex());
+
+// Using Find Method to find what you want in the object
+// const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+// console.log(account);
+
+console.log(dogs[2].owners);
+
+// console.log(dogs.find(own => own.curFood === 200));
+
+const sarahDog = dogs.find(own => own.owners === 'Sarah');
+console.log(sarahDog);
+
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
+
 /*
 
 /////////////////////////////////////////////////
