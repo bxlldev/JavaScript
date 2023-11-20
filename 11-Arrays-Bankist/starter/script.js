@@ -61,11 +61,17 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
   // .textContent = 0
 
-  movements.forEach(function (mov, i) {
+  // (Sorting is false by default) then setup to true when click the button
+  // using .slice() to copy original array for sorting (Due to sorting will be mutate the original array)
+
+  // Setup condition of sorting, when click => true => sorting ascending array, when click again => false => back to original array
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     // preparing HTML text/logic before using with .insetAdjacentHTML
@@ -230,6 +236,115 @@ btnClose.addEventListener('click', function (e) {
   inputCloseUsername.value = inputClosePin.value = '';
 });
 
+// Declared let variable to trigger true/false of sorting
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  // sorting set to true, when click btnSort
+  displayMovements(currentAccount.movements, !sorted);
+  // trigger back to false
+  sorted = !sorted;
+});
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+//-----------Array Methods Practice-------
+
+/*
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+//-----------More Ways of Creating and Filling Arrays-------
+
+// --Manually create an array--
+const arr = [1, 2, 3, 4, 5, 6, 7];
+console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+
+const x = new Array(7); // empty * 7
+console.log(x);
+console.log(x.map(() => 5)); // still empty * 7
+
+// --Programmaticly create Empty arrays + fill method--
+// Fixed it out by using Filling Array
+// Filling Array (Mutate the original array)
+// .fill(value, start from what index, end with what index)
+// x.fill(1); // [1, 1, 1, 1, 1 ,1 ,1] // 1 * 7 arrays
+// x.fill(1, 3); // [empty, empty, empty, 1, 1 ,1 ,1]
+x.fill(1, 3, 5); // [empty, empty, empty, 1, 1 ,empty ,empty]
+x.fill(1);
+console.log(x);
+
+// Using .fill(value, start, end) to replace the value to specific index of array
+arr.fill(23, 2, 6);
+console.log(arr);
+
+// Array.from Method (Better Programmaticaly Way to create an array)
+const y = Array.from({ length: 7 }, () => 1);
+console.log(y); // [1, 1, 1, 1, 1 ,1 ,1]
+
+const z = Array.from({ length: 7 }, (cur, i) => i + 1);
+console.log(z); // [1, 2, 3, 4, 5 ,6 ,7]
+
+// Try to get the real value from UI
+labelBalance.addEventListener('click', function () {
+  // Array.from(specify value/length of arrays, callback func)
+  const movementsUI = Array.from(
+    document.querySelectorAll('.movements__value'),
+    el => Number(el.textContent.replace('€', ''))
+  );
+  console.log(movementsUI);
+
+  // Another way (above is better)
+  // const movementsUI2 = [...document.querySelectorAll('.movements__value')];
+  // console.log(movementsUI2);
+});
+
+*/
+
+/*
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+//-----------Sorting Arrays-------
+// .sort(Strings) => sort by alphabet (A - Z) => Mutate original array
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+console.log(owners.sort());
+console.log(owners);
+
+// .sort() based on strings
+// .sort(Numbers) => converting Number to string then sorting (not ascending lowest to highest value) such as (-1xxx, -2x, -3xx, ... to ... 1xxx, 2x, 3xxx, ...) => Mutate original array
+console.log(movements);
+// console.log(movements.sort());
+
+// Return < 0, A , B (keep order)
+// Return > 0, B, A (switch oder)
+// Assume A = 450, B = -400
+// We want -400, 450, we should using return > 0 , B, A
+
+// Ascending
+// movements.sort((a, b) => {
+//   if (a > b) return 1; //(keep order) // same like a - b = positive => return 1; (keep order)
+//   if (a < b) return -1; //(switch order) // same like a - b = negative => return -1; (switch order)
+// });
+
+// Ascending (Simply way)
+movements.sort((a, b) => a - b);
+console.log(movements);
+
+// Descending
+// movements.sort((a, b) => {
+//   if (a > b) return -1; //(switch order) // same like b - a = negative => return -1; (switch order)
+//   if (a < b) return 1; //(switch order) // same like b - a = positive => return 1; (keep order)
+// });
+
+// Descending (Simply way)
+movements.sort((a, b) => b - a);
+console.log(movements);
+
+*/
+
+/*
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 //-----------Some and Every Method-------
@@ -257,9 +372,43 @@ console.log(movements.some(deposit));
 console.log(movements.every(deposit));
 console.log(movements.filter(deposit));
 
+*/
+
+/*
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 //-----------Flat and flatMap Method-------
+// Return all arrays/nested-arrays to one array (go one level of nested array)
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+console.log(arr.flat());
+
+// .flat(level of deep), 1 level of deep is default
+const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+console.log(arrDeep.flat(2));
+
+// const accountMovements = accounts.map(acc => acc.movements);
+// console.log(accountMovements);
+// const allMovements = accountMovements.flat();
+// console.log(allMovements);
+// const overalBalance = allMovements.reduce((acc, mov) => acc + mov, 0);
+// console.log(overalBalance);
+
+// flat (Chaining)
+const overalBalance = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(overalBalance);
+
+// flatMap (only one level deep, if want more deeper, you should using flat to specific more level instead)
+const overalBalance2 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(overalBalance2);
+
+*/
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
