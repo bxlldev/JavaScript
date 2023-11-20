@@ -313,29 +313,24 @@ const dogs = [
 // });
 
 //-------1--------
-dogs.forEach((weight, i, arr) => {
-  dogs[i].recommendedFood = Number(dogs[i].weight ** 0.75 * 28);
-  console.log(dogs.recommendedFood);
-});
-
+dogs.forEach(dog => (dog.recFood = Math.trunc(dog.weight ** 0.75 * 28)));
 console.log(dogs);
 
 //-------2--------
-// console.log(dogs.owners.findIndex());
 
-// Using Find Method to find what you want in the object
+// Recall
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account);
 
-console.log(dogs[2].owners);
-
-// console.log(dogs.find(own => own.curFood === 200));
-
-const sarahDog = dogs.find(own => own.owners === 'Sarah');
+const sarahDog = dogs.find(own => own.owners.includes('Sarah'));
 console.log(sarahDog);
+console.log(
+  `Sarah's eating too ${
+    sarahDog.curFood > sarahDog.recFood ? 'much' : 'little'
+  }`
+);
 
-const account = accounts.find(acc => acc.owner === 'Jessica Davis');
-console.log(account);
+//-------3--------
 
 /*
 
