@@ -145,6 +145,7 @@ btnScrollTo.addEventListener('click', function (e) {
     document.documentElement.clientWidth
   );
 
+  // ****** Manually Setup Scroll by Boundering and page offset *******
   // Scrolling
   // window.scrollTo(
   //   s1coords.left + window.pageXOffset,
@@ -162,4 +163,4 @@ btnScrollTo.addEventListener('click', function (e) {
 });
 
 ///////////////////////////////////////////////////////////////////
-//--------Types of Events and Event Handlers--------------
+//--------Types of Events ands Event Handlers------------
