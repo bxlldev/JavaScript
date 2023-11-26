@@ -163,4 +163,4 @@ btnScrollTo.addEventListener('click', function (e) {
 });
 
 ///////////////////////////////////////////////////////////////////
-//--------Types of Events ands Event Handlers------------
+//--------Types of Events ands Event Handlersss------------
