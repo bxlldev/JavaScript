@@ -431,4 +431,4 @@ console.log(h1.parentElement.children);
 */
 
 //////////////////////////////////////////////////////////
-//--------A Better Way: The Intersection Observer API--------------
+//--------Revealing Elements on Scroll--------------
