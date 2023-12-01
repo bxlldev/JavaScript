@@ -216,7 +216,7 @@ allSections.forEach(function (section) {
   section.classList.add('section--hidden');
 });
 
-// Simply way
+// Simply way to do
 // nav.addEventListener('mouseover', function (e) {
 //   handleHover(e, 0.5);
 // });
